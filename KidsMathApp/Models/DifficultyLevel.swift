@@ -39,12 +39,7 @@ enum DifficultyLevel: Int, CaseIterable, Identifiable, Codable {
         }
     }
 
-    var choiceCount: Int {
-        switch self {
-        case .level1, .level2: return 3
-        case .level3, .level4, .level5: return 4
-        }
-    }
+    var choiceCount: Int { 4 }
 
     var stars: Int {
         switch self {

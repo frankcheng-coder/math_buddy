@@ -10,13 +10,18 @@ extension MathEngine {
         var choices = Set<Int>()
         choices.insert(correctAnswer)
 
-        let minChoice = max(0, correctAnswer - 5)
-        let maxChoice = correctAnswer + 5
-
+        // Start with close distractors (±5), widen if not enough unique values
+        var spread = 5
         while choices.count < count {
+            let minChoice = max(0, correctAnswer - spread)
+            let maxChoice = correctAnswer + spread
             let wrong = Int.random(in: minChoice...maxChoice)
-            if wrong >= 0 {
+            if wrong >= 0 && wrong != correctAnswer {
                 choices.insert(wrong)
+            }
+            // Widen range if we're stuck (not enough unique integers in current range)
+            if maxChoice - minChoice + 1 <= choices.count {
+                spread += 3
             }
         }
 
@@ -31,7 +36,7 @@ struct AdditionEngine: MathEngine {
         generateProblem(maxNumber: difficulty.numberRange.upperBound, choiceCount: difficulty.choiceCount)
     }
 
-    func generateProblem(maxNumber: Int, choiceCount: Int = 3) -> MathProblem {
+    func generateProblem(maxNumber: Int, choiceCount: Int = 4) -> MathProblem {
         // Both operands chosen so their sum stays within maxNumber
         let a = Int.random(in: 0...maxNumber)
         let b = Int.random(in: 0...(maxNumber - a))
@@ -48,7 +53,7 @@ struct SubtractionEngine: MathEngine {
         generateProblem(maxNumber: difficulty.numberRange.upperBound, choiceCount: difficulty.choiceCount)
     }
 
-    func generateProblem(maxNumber: Int, choiceCount: Int = 3) -> MathProblem {
+    func generateProblem(maxNumber: Int, choiceCount: Int = 4) -> MathProblem {
         // a is within maxNumber, b <= a so result is non-negative
         let a = Int.random(in: 0...maxNumber)
         let b = Int.random(in: 0...a)

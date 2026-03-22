@@ -208,9 +208,9 @@ struct ProblemDisplayView: View {
         default:
             // Addition / Subtraction: original layout
             HStack(spacing: 12) {
-                ObjectCountView(count: min(problem.operand1, 10), theme: theme, maxColumns: 5)
+                ObjectCountView(count: problem.operand1, theme: theme, maxColumns: 5)
                 OperatorView(symbol: problem.operation.symbol)
-                ObjectCountView(count: min(problem.operand2, 10), theme: theme, maxColumns: 5)
+                ObjectCountView(count: problem.operand2, theme: theme, maxColumns: 5)
             }
         }
     }

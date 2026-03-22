@@ -11,19 +11,67 @@ struct ObjectCountView: View {
         self.maxColumns = maxColumns
     }
 
+    /// Icon size scales down as count grows so everything fits.
+    private var iconSize: CGFloat {
+        if count <= 5 { return 28 }
+        if count <= 10 { return 22 }
+        if count <= 20 { return 16 }
+        return 14
+    }
+
+    /// Spacing shrinks with icon size.
+    private var gridSpacing: CGFloat {
+        count <= 10 ? 6 : 4
+    }
+
     private var columns: [GridItem] {
-        Array(repeating: GridItem(.flexible(), spacing: 8), count: min(count, maxColumns))
+        let cols = min(count, maxColumns)
+        return Array(repeating: GridItem(.flexible(), spacing: gridSpacing), count: max(cols, 1))
     }
 
     var body: some View {
-        LazyVGrid(columns: columns, spacing: 8) {
-            ForEach(0..<count, id: \.self) { _ in
-                Image(systemName: theme.itemSFSymbol)
-                    .font(.system(size: 28))
-                    .foregroundColor(theme.accentColor)
+        if count <= 10 {
+            // Direct rendering — current behavior
+            LazyVGrid(columns: columns, spacing: gridSpacing) {
+                ForEach(0..<count, id: \.self) { _ in
+                    Image(systemName: theme.itemSFSymbol)
+                        .font(.system(size: iconSize))
+                        .foregroundColor(theme.accentColor)
+                }
             }
+            .padding(8)
+        } else {
+            // Grouped rendering: rows of 5 with a numeric label
+            VStack(spacing: 4) {
+                let fullRows = count / maxColumns
+                let remainder = count % maxColumns
+
+                ForEach(0..<fullRows, id: \.self) { _ in
+                    HStack(spacing: gridSpacing) {
+                        ForEach(0..<maxColumns, id: \.self) { _ in
+                            Image(systemName: theme.itemSFSymbol)
+                                .font(.system(size: iconSize))
+                                .foregroundColor(theme.accentColor)
+                        }
+                    }
+                }
+
+                if remainder > 0 {
+                    HStack(spacing: gridSpacing) {
+                        ForEach(0..<remainder, id: \.self) { _ in
+                            Image(systemName: theme.itemSFSymbol)
+                                .font(.system(size: iconSize))
+                                .foregroundColor(theme.accentColor)
+                        }
+                    }
+                }
+
+                Text("\(count)")
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundColor(theme.accentColor.opacity(0.7))
+            }
+            .padding(8)
         }
-        .padding()
     }
 }
 
