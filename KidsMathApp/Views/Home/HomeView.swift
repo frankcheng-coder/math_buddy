@@ -178,18 +178,11 @@ struct OperationCard: View {
                         .fill(operation.color)
                 )
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(operation.displayName)
-                    .font(.system(size: 22, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.75)
-
-                Text(operationHint)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-            }
+            Text(operation.displayName)
+                .font(.system(size: 22, weight: .bold, design: .rounded))
+                .foregroundColor(.primary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
 
             Spacer()
 
@@ -217,14 +210,6 @@ struct OperationCard: View {
         )
     }
 
-    private var operationHint: String {
-        switch operation {
-        case .addition: return "Put things together"
-        case .subtraction: return "Take things away"
-        case .multiplication: return "Groups of things"
-        case .division: return "Share equally"
-        }
-    }
 }
 
 struct BottomButton: View {
