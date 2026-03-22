@@ -110,14 +110,8 @@ struct ProblemDisplayView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            // Visual objects
-            HStack(spacing: 12) {
-                ObjectCountView(count: min(problem.operand1, 10), theme: theme, maxColumns: 5)
-
-                OperatorView(symbol: problem.operation.symbol)
-
-                ObjectCountView(count: min(problem.operand2, 10), theme: theme, maxColumns: 5)
-            }
+            // Visual objects — layout varies by operation
+            visualObjectsView
 
             // Equation text
             HStack(spacing: 8) {
@@ -142,6 +136,71 @@ struct ProblemDisplayView: View {
                 .fill(.white.opacity(0.8))
                 .shadow(color: .black.opacity(0.05), radius: 10, y: 4)
         )
+    }
+
+    @ViewBuilder
+    private var visualObjectsView: some View {
+        switch problem.operation {
+        case .multiplication:
+            // Show as repeated groups: e.g. 3 x 2 = three groups of 2 objects
+            VStack(spacing: 6) {
+                Text("\(problem.operand1) groups of \(problem.operand2)")
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .foregroundColor(.secondary)
+                HStack(spacing: 10) {
+                    ForEach(0..<min(problem.operand1, 6), id: \.self) { _ in
+                        VStack(spacing: 4) {
+                            ForEach(0..<min(problem.operand2, 5), id: \.self) { _ in
+                                Image(systemName: theme.itemSFSymbol)
+                                    .font(.system(size: 20))
+                                    .foregroundColor(theme.accentColor)
+                            }
+                        }
+                        .padding(6)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(theme.accentColor.opacity(0.3), style: StrokeStyle(lineWidth: 2, dash: [4]))
+                        )
+                    }
+                }
+            }
+        case .division:
+            // Show as sharing: e.g. 6 ÷ 2 = 6 objects shared into 2 groups
+            VStack(spacing: 6) {
+                Text("Share \(problem.operand1) into \(problem.operand2) groups")
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .foregroundColor(.secondary)
+                HStack(spacing: 4) {
+                    ForEach(0..<min(problem.operand1, 12), id: \.self) { _ in
+                        Image(systemName: theme.itemSFSymbol)
+                            .font(.system(size: 20))
+                            .foregroundColor(theme.accentColor)
+                    }
+                }
+                Image(systemName: "arrow.down")
+                    .font(.title3)
+                    .foregroundColor(.secondary)
+                HStack(spacing: 10) {
+                    ForEach(0..<min(problem.operand2, 5), id: \.self) { _ in
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(theme.accentColor.opacity(0.3), style: StrokeStyle(lineWidth: 2, dash: [4]))
+                            .frame(width: 50, height: 40)
+                            .overlay(
+                                Text("?")
+                                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                                    .foregroundColor(.orange)
+                            )
+                    }
+                }
+            }
+        default:
+            // Addition / Subtraction: original layout
+            HStack(spacing: 12) {
+                ObjectCountView(count: min(problem.operand1, 10), theme: theme, maxColumns: 5)
+                OperatorView(symbol: problem.operation.symbol)
+                ObjectCountView(count: min(problem.operand2, 10), theme: theme, maxColumns: 5)
+            }
+        }
     }
 }
 

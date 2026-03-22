@@ -6,8 +6,8 @@ struct AppSettings: Codable, Equatable {
     var enabledOperations: Set<MathOperation> = [.addition, .subtraction]
     var soundEnabled: Bool = true
     var musicEnabled: Bool = false
-    var showMultiplication: Bool = false
-    var showDivision: Bool = false
+    var showMultiplication: Bool = true
+    var showDivision: Bool = true
     var dailyGoal: Int = 10
     var timerEnabled: Bool = false
     var rewardsEnabled: Bool = true

@@ -7,35 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10001 /* KidsMathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001; };
-		A10002 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002; };
-		A10003 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003; };
-		A10004 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004; };
-		A10005 /* MathOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005; };
-		A10006 /* DifficultyLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006; };
-		A10007 /* MathProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007; };
-		A10008 /* PracticeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008; };
-		A10009 /* ChildProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009; };
-		A10010 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010; };
-		A10011 /* MathEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011; };
-		A10012 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012; };
-		A10013 /* RewardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013; };
-		A10014 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014; };
-		A10015 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10015; };
-		A10016 /* ThemeSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10016; };
-		A10017 /* PracticeSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10017; };
-		A10018 /* ParentSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10018; };
-		A10019 /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019; };
-		A10020 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10020; };
-		A10021 /* ThemeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10021; };
-		A10022 /* PracticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10022; };
-		A10023 /* ParentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023; };
-		A10024 /* ProgressView_.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10024; };
-		A10025 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10025; };
-		A10026 /* CelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10026; };
-		A10027 /* ObjectCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027; };
-		A10028 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028; };
-		A10029 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10029; };
+		A10001 /* KidsMathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001 /* KidsMathApp.swift */; };
+		A10002 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002 /* AppState.swift */; };
+		A10003 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003 /* AppRouter.swift */; };
+		A10004 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004 /* Theme.swift */; };
+		A10005 /* MathOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005 /* MathOperation.swift */; };
+		A10006 /* DifficultyLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006 /* DifficultyLevel.swift */; };
+		A10007 /* MathProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007 /* MathProblem.swift */; };
+		A10008 /* PracticeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008 /* PracticeResult.swift */; };
+		A10009 /* ChildProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009 /* ChildProgress.swift */; };
+		A10010 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010 /* AppSettings.swift */; };
+		A10011 /* MathEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011 /* MathEngine.swift */; };
+		A10012 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012 /* AudioService.swift */; };
+		A10013 /* RewardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013 /* RewardService.swift */; };
+		A10014 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014 /* ThemeManager.swift */; };
+		A10015 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10015 /* HomeViewModel.swift */; };
+		A10016 /* ThemeSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10016 /* ThemeSelectionViewModel.swift */; };
+		A10017 /* PracticeSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10017 /* PracticeSessionViewModel.swift */; };
+		A10018 /* ParentSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10018 /* ParentSettingsViewModel.swift */; };
+		A10019 /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019 /* ProgressViewModel.swift */; };
+		A10020 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10020 /* HomeView.swift */; };
+		A10021 /* ThemeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10021 /* ThemeSelectionView.swift */; };
+		A10022 /* PracticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10022 /* PracticeView.swift */; };
+		A10023 /* ParentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023 /* ParentSettingsView.swift */; };
+		A10024 /* ProgressView_.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10024 /* ProgressView_.swift */; };
+		A10025 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10025 /* LargeButton.swift */; };
+		A10026 /* CelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10026 /* CelebrationView.swift */; };
+		A10027 /* ObjectCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027 /* ObjectCountView.swift */; };
+		A10028 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028 /* StarRatingView.swift */; };
+		A10029 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10029 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -251,7 +251,7 @@
 /* Begin PBXNativeTarget section */
 		F10001 /* KidsMathApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = G10003;
+			buildConfigurationList = G10003 /* Build configuration list for PBXNativeTarget "KidsMathApp" */;
 			buildPhases = (
 				F10002 /* Sources */,
 				D10001 /* Frameworks */,
@@ -274,14 +274,14 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					F10001 = {
 						CreatedOnToolsVersion = 15.4;
 					};
 				};
 			};
-			buildConfigurationList = G10001;
+			buildConfigurationList = G10001 /* Build configuration list for PBXProject "KidsMathApp" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -368,6 +368,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
@@ -377,10 +378,13 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 9LVC79H47X;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -399,6 +403,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -423,6 +428,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
@@ -432,10 +438,13 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9LVC79H47X;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -448,6 +457,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -474,7 +484,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kidsmathapp.MathBuddy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pengcheng.kidsmathapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -505,7 +515,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kidsmathapp.MathBuddy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pengcheng.kidsmathapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -537,7 +547,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = H10001 /* Project object */;
 }
