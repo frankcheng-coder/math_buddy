@@ -5,12 +5,13 @@ struct PracticeView: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.dismiss) private var dismiss
 
-    init(operation: MathOperation, theme: Theme, difficulty: DifficultyLevel, problemCount: Int = 5) {
+    init(operation: MathOperation, theme: Theme, difficulty: DifficultyLevel, problemCount: Int = 5, levelMaxNumber: Int? = nil) {
         _viewModel = StateObject(wrappedValue: PracticeSessionViewModel(
             operation: operation,
             theme: theme,
             difficulty: difficulty,
-            totalProblems: problemCount
+            totalProblems: problemCount,
+            levelMaxNumber: levelMaxNumber
         ))
     }
 
@@ -63,23 +64,34 @@ struct PracticeView: View {
             }
             .padding(.horizontal, 20)
 
+            // Level-Up Overlay (shown first, then session complete)
+            if viewModel.didLevelUp {
+                LevelUpView(level: viewModel.newLevel, operation: viewModel.operation, theme: viewModel.theme) {
+                    viewModel.didLevelUp = false
+                }
+            }
+
             // Session Complete Overlay
-            if viewModel.isSessionComplete, let result = viewModel.sessionResult {
+            if viewModel.isSessionComplete && !viewModel.didLevelUp, let result = viewModel.sessionResult {
                 SessionCompleteView(result: result, theme: viewModel.theme) {
-                    appState.progress.recordResult(result)
-                    appState.progress.save()
                     dismiss()
                 }
             }
 
             // Confetti
-            if viewModel.showCelebration {
+            if viewModel.showCelebration || viewModel.didLevelUp {
                 ConfettiView()
                     .ignoresSafeArea()
             }
         }
         .navigationBarBackButtonHidden(viewModel.isSessionComplete)
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: viewModel.isSessionComplete) { _, isComplete in
+            guard isComplete, let result = viewModel.sessionResult else { return }
+            appState.progress.recordResult(result)
+            viewModel.checkLevelUp(progress: &appState.progress)
+            appState.progress.save()
+        }
     }
 }
 
@@ -299,6 +311,73 @@ struct SessionCompleteView: View {
         case 0.7..<0.9: return "Great job!"
         case 0.5..<0.7: return "Good try!"
         default: return "Keep practicing!"
+        }
+    }
+}
+
+struct LevelUpView: View {
+    let level: Int
+    let operation: MathOperation
+    let theme: Theme
+    let onDismiss: () -> Void
+
+    @State private var showBadge = false
+    @State private var showText = false
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+
+            VStack(spacing: 20) {
+                Image(systemName: "trophy.fill")
+                    .font(.system(size: 70))
+                    .foregroundColor(.yellow)
+                    .scaleEffect(showBadge ? 1.0 : 0.1)
+                    .animation(.spring(response: 0.5, dampingFraction: 0.5), value: showBadge)
+
+                Text("Level Up!")
+                    .font(.system(size: 36, weight: .bold, design: .rounded))
+                    .foregroundColor(.white)
+                    .opacity(showText ? 1 : 0)
+                    .animation(.easeIn.delay(0.4), value: showText)
+
+                Text("\(operation.displayName) Level \(level)")
+                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                    .foregroundColor(.white.opacity(0.9))
+                    .opacity(showText ? 1 : 0)
+                    .animation(.easeIn.delay(0.6), value: showText)
+
+                Text("Numbers up to \(ChildProgress.maxNumber(forLevel: level))!")
+                    .font(.system(size: 18, weight: .medium, design: .rounded))
+                    .foregroundColor(.white.opacity(0.7))
+                    .opacity(showText ? 1 : 0)
+                    .animation(.easeIn.delay(0.8), value: showText)
+
+                Button(action: onDismiss) {
+                    Text("Keep Going!")
+                        .font(.title2.bold())
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 40)
+                        .padding(.vertical, 16)
+                        .background(
+                            Capsule()
+                                .fill(operation.color)
+                                .shadow(radius: 4)
+                        )
+                }
+                .opacity(showText ? 1 : 0)
+                .animation(.easeIn.delay(1.0), value: showText)
+            }
+            .padding(40)
+            .background(
+                RoundedRectangle(cornerRadius: 30)
+                    .fill(.ultraThinMaterial)
+            )
+        }
+        .onAppear {
+            showBadge = true
+            showText = true
         }
     }
 }

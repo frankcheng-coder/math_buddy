@@ -2,6 +2,9 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var appState: AppState
+    @State private var resetLevelProgress: CGFloat = 0
+    @State private var resetLevelTimer: Timer?
+    @State private var didResetLevels = false
 
     var body: some View {
         ZStack {
@@ -30,9 +33,14 @@ struct HomeView: View {
                                     operation: operation,
                                     theme: appState.selectedTheme,
                                     difficulty: appState.settings.difficulty,
-                                    problemCount: appState.settings.problemsPerSession
+                                    problemCount: appState.settings.problemsPerSession,
+                                    levelMaxNumber: levelMaxNumber(for: operation)
                                 )) {
-                                    OperationCard(operation: operation, theme: appState.selectedTheme)
+                                    OperationCard(
+                                        operation: operation,
+                                        theme: appState.selectedTheme,
+                                        level: operationLevel(for: operation)
+                                    )
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -56,11 +64,90 @@ struct HomeView: View {
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 8)
+
+                    // Reset Level (long-press protected)
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(Color.gray.opacity(0.15))
+                            .frame(height: 44)
+
+                        GeometryReader { geo in
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color.orange.opacity(0.5))
+                                .frame(width: geo.size.width * resetLevelProgress, height: 44)
+                        }
+                        .frame(height: 44)
+
+                        Text(didResetLevels ? "Levels Reset!" : "Hold to Reset Levels")
+                            .font(.system(size: 14, weight: .semibold, design: .rounded))
+                            .foregroundColor(didResetLevels ? .green : .secondary)
+                    }
+                    .gesture(
+                        LongPressGesture(minimumDuration: 2.0)
+                            .onChanged { _ in startResetLevelTimer() }
+                            .onEnded { _ in performResetLevels() }
+                    )
+                    .simultaneousGesture(
+                        DragGesture(minimumDistance: 0)
+                            .onEnded { _ in stopResetLevelTimer() }
+                    )
+                    .padding(.horizontal, 24)
+                    .padding(.top, 4)
                 }
                 .padding(.bottom, 30)
             }
         }
         .navigationBarHidden(true)
+    }
+
+    private func levelMaxNumber(for operation: MathOperation) -> Int? {
+        guard operation == .addition || operation == .subtraction else { return nil }
+        let level = appState.progress.level(for: operation)
+        return ChildProgress.maxNumber(forLevel: level)
+    }
+
+    private func operationLevel(for operation: MathOperation) -> Int? {
+        guard operation == .addition || operation == .subtraction else { return nil }
+        return appState.progress.level(for: operation)
+    }
+
+    private func startResetLevelTimer() {
+        guard !didResetLevels else { return }
+        resetLevelTimer?.invalidate()
+        resetLevelProgress = 0
+        resetLevelTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
+            withAnimation(.linear(duration: 0.05)) {
+                resetLevelProgress += 0.05 / 2.0
+            }
+            if resetLevelProgress >= 1.0 {
+                performResetLevels()
+            }
+        }
+    }
+
+    private func stopResetLevelTimer() {
+        resetLevelTimer?.invalidate()
+        resetLevelTimer = nil
+        if !didResetLevels {
+            withAnimation { resetLevelProgress = 0 }
+        }
+    }
+
+    private func performResetLevels() {
+        resetLevelTimer?.invalidate()
+        resetLevelTimer = nil
+        appState.progress.resetLevels()
+        appState.progress.save()
+        withAnimation {
+            resetLevelProgress = 1.0
+            didResetLevels = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            withAnimation {
+                didResetLevels = false
+                resetLevelProgress = 0
+            }
+        }
     }
 
     private func shouldShowOperation(_ operation: MathOperation) -> Bool {
@@ -78,6 +165,7 @@ struct HomeView: View {
 struct OperationCard: View {
     let operation: MathOperation
     let theme: Theme
+    var level: Int? = nil
 
     var body: some View {
         HStack(spacing: 16) {
@@ -94,13 +182,28 @@ struct OperationCard: View {
                 Text(operation.displayName)
                     .font(.system(size: 22, weight: .bold, design: .rounded))
                     .foregroundColor(.primary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
 
                 Text(operationHint)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
+                    .lineLimit(1)
             }
 
             Spacer()
+
+            if let level = level {
+                Text("Lv.\(level)")
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(
+                        Capsule()
+                            .fill(operation.color.opacity(0.8))
+                    )
+            }
 
             Image(systemName: "chevron.right.circle.fill")
                 .font(.title2)

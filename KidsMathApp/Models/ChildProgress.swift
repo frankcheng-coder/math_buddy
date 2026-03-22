@@ -9,6 +9,52 @@ struct ChildProgress: Codable {
     var totalStarsEarned: Int = 0
     var results: [PracticeResult] = []
 
+    // MARK: - Level Progression (Addition & Subtraction)
+
+    var additionLevel: Int = 1
+    var subtractionLevel: Int = 1
+    var additionQuestionsInLevel: Int = 0
+    var subtractionQuestionsInLevel: Int = 0
+
+    static let questionsPerLevel = 10
+
+    func level(for operation: MathOperation) -> Int {
+        switch operation {
+        case .addition: return additionLevel
+        case .subtraction: return subtractionLevel
+        default: return 1
+        }
+    }
+
+    /// Max number for a given level: Level 1 = 10, Level 2 = 20, Level 3 = 30, etc.
+    static func maxNumber(forLevel level: Int) -> Int {
+        level * 10
+    }
+
+    /// Records completed questions and returns true if the child leveled up.
+    @discardableResult
+    mutating func recordQuestionsCompleted(for operation: MathOperation, count: Int) -> Bool {
+        switch operation {
+        case .addition:
+            additionQuestionsInLevel += count
+            if additionQuestionsInLevel >= Self.questionsPerLevel {
+                additionQuestionsInLevel -= Self.questionsPerLevel
+                additionLevel += 1
+                return true
+            }
+        case .subtraction:
+            subtractionQuestionsInLevel += count
+            if subtractionQuestionsInLevel >= Self.questionsPerLevel {
+                subtractionQuestionsInLevel -= Self.questionsPerLevel
+                subtractionLevel += 1
+                return true
+            }
+        default:
+            break
+        }
+        return false
+    }
+
     var overallAccuracy: Double {
         guard totalProblemsAttempted > 0 else { return 0 }
         return Double(totalCorrect) / Double(totalProblemsAttempted)
@@ -43,6 +89,13 @@ struct ChildProgress: Codable {
 
     mutating func recordWrongAnswer() {
         currentStreak = 0
+    }
+
+    mutating func resetLevels() {
+        additionLevel = 1
+        subtractionLevel = 1
+        additionQuestionsInLevel = 0
+        subtractionQuestionsInLevel = 0
     }
 
     // MARK: - Persistence

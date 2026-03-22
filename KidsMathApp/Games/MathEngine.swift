@@ -28,11 +28,15 @@ struct AdditionEngine: MathEngine {
     let operation = MathOperation.addition
 
     func generateProblem(difficulty: DifficultyLevel) -> MathProblem {
-        let range = difficulty.numberRange
-        let a = Int.random(in: range)
-        let b = Int.random(in: range)
+        generateProblem(maxNumber: difficulty.numberRange.upperBound, choiceCount: difficulty.choiceCount)
+    }
+
+    func generateProblem(maxNumber: Int, choiceCount: Int = 3) -> MathProblem {
+        // Both operands chosen so their sum stays within maxNumber
+        let a = Int.random(in: 0...maxNumber)
+        let b = Int.random(in: 0...(maxNumber - a))
         let answer = a + b
-        let choices = generateChoices(correctAnswer: answer, count: difficulty.choiceCount, range: range)
+        let choices = generateChoices(correctAnswer: answer, count: choiceCount, range: 0...maxNumber)
         return MathProblem(operand1: a, operand2: b, operation: .addition, correctAnswer: answer, choices: choices)
     }
 }
@@ -41,13 +45,15 @@ struct SubtractionEngine: MathEngine {
     let operation = MathOperation.subtraction
 
     func generateProblem(difficulty: DifficultyLevel) -> MathProblem {
-        let range = difficulty.numberRange
-        var a = Int.random(in: range)
-        var b = Int.random(in: range)
-        // Ensure a >= b so result is non-negative
-        if a < b { swap(&a, &b) }
+        generateProblem(maxNumber: difficulty.numberRange.upperBound, choiceCount: difficulty.choiceCount)
+    }
+
+    func generateProblem(maxNumber: Int, choiceCount: Int = 3) -> MathProblem {
+        // a is within maxNumber, b <= a so result is non-negative
+        let a = Int.random(in: 0...maxNumber)
+        let b = Int.random(in: 0...a)
         let answer = a - b
-        let choices = generateChoices(correctAnswer: answer, count: difficulty.choiceCount, range: range)
+        let choices = generateChoices(correctAnswer: answer, count: choiceCount, range: 0...maxNumber)
         return MathProblem(operand1: a, operand2: b, operation: .subtraction, correctAnswer: answer, choices: choices)
     }
 }
