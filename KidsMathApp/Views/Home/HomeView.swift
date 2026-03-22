@@ -34,7 +34,8 @@ struct HomeView: View {
                                     theme: appState.selectedTheme,
                                     difficulty: appState.settings.difficulty,
                                     problemCount: appState.settings.problemsPerSession,
-                                    levelMaxNumber: levelMaxNumber(for: operation)
+                                    levelMaxNumber: levelMaxNumber(for: operation),
+                                    level: operationLevel(for: operation)
                                 )) {
                                     OperationCard(
                                         operation: operation,
@@ -107,7 +108,6 @@ struct HomeView: View {
     }
 
     private func operationLevel(for operation: MathOperation) -> Int? {
-        guard operation == .addition || operation == .subtraction else { return nil }
         return appState.progress.level(for: operation)
     }
 

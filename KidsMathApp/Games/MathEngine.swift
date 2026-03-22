@@ -67,24 +67,18 @@ struct MultiplicationEngine: MathEngine {
     let operation = MathOperation.multiplication
 
     func generateProblem(difficulty: DifficultyLevel) -> MathProblem {
-        // Child-friendly: use small numbers, framed as "groups of things"
-        let a: Int
-        let b: Int
-        switch difficulty {
-        case .level1, .level2:
-            // Very easy: 1-3 groups of 1-3 items (answers 1-9)
-            a = Int.random(in: 1...3)
-            b = Int.random(in: 1...3)
-        case .level3, .level4:
-            // Gentle progression: 1-5 groups of 1-5 items (answers 1-25)
-            a = Int.random(in: 1...5)
-            b = [2, 3, 5].randomElement()!
-        case .level5:
-            a = Int.random(in: 1...5)
-            b = Int.random(in: 2...5)
-        }
+        generateProblem(level: 1)
+    }
+
+    /// Level-based generation with gentle scaling.
+    /// Lv1: 1-2 × 1-3, Lv2: 1-3 × 1-4, Lv3: 1-4 × 1-5, Lv4+: grows slowly, capped at 9×9.
+    func generateProblem(level: Int) -> MathProblem {
+        let maxA = min(level + 1, 9)
+        let maxB = min(level + 2, 9)
+        let a = Int.random(in: 1...maxA)
+        let b = Int.random(in: 1...maxB)
         let answer = a * b
-        let choices = generateChoices(correctAnswer: answer, count: difficulty.choiceCount, range: 0...max(answer + 5, 10))
+        let choices = generateChoices(correctAnswer: answer, count: 4, range: 0...max(answer + 5, 10))
         return MathProblem(operand1: a, operand2: b, operation: .multiplication, correctAnswer: answer, choices: choices)
     }
 }
@@ -93,25 +87,18 @@ struct DivisionEngine: MathEngine {
     let operation = MathOperation.division
 
     func generateProblem(difficulty: DifficultyLevel) -> MathProblem {
-        // Child-friendly: generate from multiplication facts so answers are always whole numbers
-        // Framed as "sharing equally": dividend items shared among divisor friends
-        let answer: Int
-        let divisor: Int
-        switch difficulty {
-        case .level1, .level2:
-            // Very easy: small totals, share among 2 (answers 1-3)
-            answer = Int.random(in: 1...3)
-            divisor = 2
-        case .level3, .level4:
-            // Gentle progression: share among 2-3 (answers 1-5)
-            answer = Int.random(in: 1...5)
-            divisor = Int.random(in: 2...3)
-        case .level5:
-            answer = Int.random(in: 1...5)
-            divisor = Int.random(in: 2...4)
-        }
+        generateProblem(level: 1)
+    }
+
+    /// Level-based generation derived from multiplication facts — always whole-number answers.
+    /// Lv1: answer 1-2, divisor 2. Lv2: answer 1-3, divisor 2-3. Lv3+: grows slowly, capped.
+    func generateProblem(level: Int) -> MathProblem {
+        let maxAnswer = min(level + 1, 9)
+        let maxDivisor = min(level + 1, 6)
+        let answer = Int.random(in: 1...maxAnswer)
+        let divisor = Int.random(in: 2...max(maxDivisor, 2))
         let dividend = answer * divisor
-        let choices = generateChoices(correctAnswer: answer, count: difficulty.choiceCount, range: 0...max(answer + 5, 10))
+        let choices = generateChoices(correctAnswer: answer, count: 4, range: 0...max(answer + 5, 10))
         return MathProblem(operand1: dividend, operand2: divisor, operation: .division, correctAnswer: answer, choices: choices)
     }
 }

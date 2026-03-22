@@ -5,13 +5,14 @@ struct PracticeView: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.dismiss) private var dismiss
 
-    init(operation: MathOperation, theme: Theme, difficulty: DifficultyLevel, problemCount: Int = 5, levelMaxNumber: Int? = nil) {
+    init(operation: MathOperation, theme: Theme, difficulty: DifficultyLevel, problemCount: Int = 5, levelMaxNumber: Int? = nil, level: Int? = nil) {
         _viewModel = StateObject(wrappedValue: PracticeSessionViewModel(
             operation: operation,
             theme: theme,
             difficulty: difficulty,
             totalProblems: problemCount,
-            levelMaxNumber: levelMaxNumber
+            levelMaxNumber: levelMaxNumber,
+            level: level
         ))
     }
 
@@ -324,6 +325,21 @@ struct LevelUpView: View {
     @State private var showBadge = false
     @State private var showText = false
 
+    private var levelDescription: String {
+        switch operation {
+        case .addition, .subtraction:
+            return "Numbers up to \(ChildProgress.maxNumber(forLevel: level))!"
+        case .multiplication:
+            let maxA = min(level + 1, 9)
+            let maxB = min(level + 2, 9)
+            return "Up to \(maxA) × \(maxB)!"
+        case .division:
+            let maxAnswer = min(level + 1, 9)
+            let maxDivisor = min(level + 1, 6)
+            return "Answers up to \(maxAnswer), ÷ up to \(maxDivisor)!"
+        }
+    }
+
     var body: some View {
         ZStack {
             Color.black.opacity(0.4)
@@ -348,7 +364,7 @@ struct LevelUpView: View {
                     .opacity(showText ? 1 : 0)
                     .animation(.easeIn.delay(0.6), value: showText)
 
-                Text("Numbers up to \(ChildProgress.maxNumber(forLevel: level))!")
+                Text(levelDescription)
                     .font(.system(size: 18, weight: .medium, design: .rounded))
                     .foregroundColor(.white.opacity(0.7))
                     .opacity(showText ? 1 : 0)

@@ -9,12 +9,16 @@ struct ChildProgress: Codable {
     var totalStarsEarned: Int = 0
     var results: [PracticeResult] = []
 
-    // MARK: - Level Progression (Addition & Subtraction)
+    // MARK: - Level Progression
 
     var additionLevel: Int = 1
     var subtractionLevel: Int = 1
+    var multiplicationLevel: Int = 1
+    var divisionLevel: Int = 1
     var additionQuestionsInLevel: Int = 0
     var subtractionQuestionsInLevel: Int = 0
+    var multiplicationQuestionsInLevel: Int = 0
+    var divisionQuestionsInLevel: Int = 0
 
     static let questionsPerLevel = 10
 
@@ -22,7 +26,8 @@ struct ChildProgress: Codable {
         switch operation {
         case .addition: return additionLevel
         case .subtraction: return subtractionLevel
-        default: return 1
+        case .multiplication: return multiplicationLevel
+        case .division: return divisionLevel
         }
     }
 
@@ -49,8 +54,20 @@ struct ChildProgress: Codable {
                 subtractionLevel += 1
                 return true
             }
-        default:
-            break
+        case .multiplication:
+            multiplicationQuestionsInLevel += count
+            if multiplicationQuestionsInLevel >= Self.questionsPerLevel {
+                multiplicationQuestionsInLevel -= Self.questionsPerLevel
+                multiplicationLevel += 1
+                return true
+            }
+        case .division:
+            divisionQuestionsInLevel += count
+            if divisionQuestionsInLevel >= Self.questionsPerLevel {
+                divisionQuestionsInLevel -= Self.questionsPerLevel
+                divisionLevel += 1
+                return true
+            }
         }
         return false
     }
@@ -94,8 +111,12 @@ struct ChildProgress: Codable {
     mutating func resetLevels() {
         additionLevel = 1
         subtractionLevel = 1
+        multiplicationLevel = 1
+        divisionLevel = 1
         additionQuestionsInLevel = 0
         subtractionQuestionsInLevel = 0
+        multiplicationQuestionsInLevel = 0
+        divisionQuestionsInLevel = 0
     }
 
     // MARK: - Persistence
