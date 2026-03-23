@@ -5,7 +5,7 @@ struct PracticeView: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.dismiss) private var dismiss
 
-    init(operation: MathOperation, theme: Theme, difficulty: DifficultyLevel, problemCount: Int = 5, levelMaxNumber: Int? = nil, level: Int? = nil) {
+    init(operation: MathOperation, theme: Theme, difficulty: DifficultyLevel, problemCount: Int = 10, levelMaxNumber: Int? = nil, level: Int? = nil) {
         _viewModel = StateObject(wrappedValue: PracticeSessionViewModel(
             operation: operation,
             theme: theme,
@@ -257,6 +257,7 @@ struct FeedbackBannerView: View {
     let onNext: () -> Void
 
     @State private var appear = false
+    @State private var pulseArrow = false
 
     var body: some View {
         HStack {
@@ -274,6 +275,12 @@ struct FeedbackBannerView: View {
                 Image(systemName: "arrow.right.circle.fill")
                     .font(.system(size: 36))
                     .foregroundColor(isCorrect ? .green : .orange)
+                    .scaleEffect(pulseArrow ? 1.35 : 1.0)
+                    .shadow(color: pulseArrow ? (isCorrect ? .green.opacity(0.5) : .orange.opacity(0.5)) : .clear, radius: 8)
+                    .animation(
+                        .easeInOut(duration: 0.5).repeatForever(autoreverses: true),
+                        value: pulseArrow
+                    )
             }
         }
         .padding(16)
@@ -287,8 +294,11 @@ struct FeedbackBannerView: View {
             withAnimation(.spring(response: 0.3)) {
                 appear = true
             }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                pulseArrow = true
+            }
         }
-        .onDisappear { appear = false }
+        .onDisappear { appear = false; pulseArrow = false }
     }
 }
 

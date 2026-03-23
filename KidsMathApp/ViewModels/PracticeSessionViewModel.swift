@@ -73,12 +73,16 @@ class PracticeSessionViewModel: ObservableObject {
     }
 
     func nextProblem() {
-        currentProblemIndex += 1
+        guard !isSessionComplete else { return }
 
-        if currentProblemIndex >= totalProblems {
+        let nextIndex = currentProblemIndex + 1
+        if nextIndex >= totalProblems {
+            currentProblemIndex = totalProblems - 1
             completeSession()
             return
         }
+
+        currentProblemIndex = nextIndex
 
         selectedAnswer = nil
         isCorrect = nil
@@ -130,6 +134,6 @@ class PracticeSessionViewModel: ObservableObject {
     }
 
     var progressFraction: Double {
-        Double(currentProblemIndex) / Double(totalProblems)
+        min(Double(currentProblemIndex + 1) / Double(totalProblems), 1.0)
     }
 }

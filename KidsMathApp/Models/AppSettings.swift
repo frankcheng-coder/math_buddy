@@ -11,7 +11,7 @@ struct AppSettings: Codable, Equatable {
     var dailyGoal: Int = 10
     var timerEnabled: Bool = false
     var rewardsEnabled: Bool = true
-    var problemsPerSession: Int = 5
+    var problemsPerSession: Int = 10
 
     var selectedTheme: Theme {
         Theme(rawValue: selectedThemeId) ?? .cars
@@ -23,8 +23,11 @@ struct AppSettings: Codable, Equatable {
 
     static func load() -> AppSettings {
         guard let data = UserDefaults.standard.data(forKey: key),
-              let settings = try? JSONDecoder().decode(AppSettings.self, from: data) else {
+              var settings = try? JSONDecoder().decode(AppSettings.self, from: data) else {
             return AppSettings()
+        }
+        if settings.problemsPerSession < 10 {
+            settings.problemsPerSession = 10
         }
         return settings
     }

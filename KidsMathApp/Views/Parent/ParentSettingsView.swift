@@ -87,7 +87,7 @@ struct ParentSettingsView: View {
                 }
 
                 Stepper("Problems per session: \(appState.settings.problemsPerSession)",
-                        value: $appState.settings.problemsPerSession, in: 3...20)
+                        value: $appState.settings.problemsPerSession, in: 10...20)
             }
 
             Section("Math Operations") {
