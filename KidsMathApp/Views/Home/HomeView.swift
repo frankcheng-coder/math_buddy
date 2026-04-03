@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct HomeView: View {
     @EnvironmentObject var appState: AppState
@@ -81,7 +82,7 @@ struct HomeView: View {
 
                         Text(didResetLevels ? "Levels Reset!" : "Hold to Reset Levels")
                             .font(.system(size: 14, weight: .semibold, design: .rounded))
-                            .foregroundColor(didResetLevels ? .green : .secondary)
+                            .foregroundColor(didResetLevels ? .green : Color.gray)
                     }
                     .gesture(
                         LongPressGesture(minimumDuration: 2.0)
@@ -205,7 +206,7 @@ struct OperationCard: View {
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(.white)
+                .fill(Color(UIColor.systemBackground))
                 .shadow(color: .black.opacity(0.08), radius: 8, y: 3)
         )
     }
@@ -232,7 +233,7 @@ struct BottomButton: View {
         .frame(height: 70)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(.white)
+                .fill(Color(UIColor.systemBackground))
                 .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
         )
     }

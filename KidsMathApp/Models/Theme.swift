@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 enum Theme: String, CaseIterable, Identifiable, Codable {
     case cars
@@ -33,9 +34,24 @@ enum Theme: String, CaseIterable, Identifiable, Codable {
 
     var backgroundColor: Color {
         switch self {
-        case .cars: return Color(red: 0.9, green: 0.95, blue: 1.0)
-        case .animals: return Color(red: 1.0, green: 0.96, blue: 0.9)
-        case .plants: return Color(red: 0.9, green: 1.0, blue: 0.92)
+        case .cars:
+            return Color(UIColor { traits in
+                traits.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.10, green: 0.12, blue: 0.18, alpha: 1.0)
+                    : UIColor(red: 0.9, green: 0.95, blue: 1.0, alpha: 1.0)
+            })
+        case .animals:
+            return Color(UIColor { traits in
+                traits.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.16, green: 0.13, blue: 0.10, alpha: 1.0)
+                    : UIColor(red: 1.0, green: 0.96, blue: 0.9, alpha: 1.0)
+            })
+        case .plants:
+            return Color(UIColor { traits in
+                traits.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.10, green: 0.15, blue: 0.11, alpha: 1.0)
+                    : UIColor(red: 0.9, green: 1.0, blue: 0.92, alpha: 1.0)
+            })
         }
     }
 

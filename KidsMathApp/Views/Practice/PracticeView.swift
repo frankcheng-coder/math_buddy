@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct PracticeView: View {
     @StateObject private var viewModel: PracticeSessionViewModel
@@ -146,7 +147,7 @@ struct ProblemDisplayView: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 24)
-                .fill(.white.opacity(0.8))
+                .fill(Color(UIColor.systemBackground).opacity(0.8))
                 .shadow(color: .black.opacity(0.05), radius: 10, y: 4)
         )
     }
