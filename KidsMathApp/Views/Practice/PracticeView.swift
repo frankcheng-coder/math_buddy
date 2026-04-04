@@ -131,20 +131,10 @@ struct ProblemDisplayView: View {
                 visualObjectsView
                     .transition(.opacity.combined(with: .scale(scale: 0.9)))
             } else {
-                Button {
+                HintButton {
                     withAnimation(.spring(response: 0.3)) {
                         showHint = true
                     }
-                } label: {
-                    Label("Hint", systemImage: "lightbulb")
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                        .foregroundColor(.orange)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(
-                            Capsule()
-                                .fill(Color.orange.opacity(0.12))
-                        )
                 }
             }
 
@@ -427,5 +417,30 @@ struct LevelUpView: View {
             showBadge = true
             showText = true
         }
+    }
+}
+
+private struct HintButton: View {
+    let action: () -> Void
+    @State private var pulse = false
+
+    var body: some View {
+        Button(action: action) {
+            Label("Hint", systemImage: "lightbulb")
+                .font(.system(size: 26, weight: .bold, design: .rounded))
+                .foregroundColor(.orange)
+                .padding(.horizontal, 22)
+                .padding(.vertical, 12)
+                .background(
+                    Capsule()
+                        .fill(Color.orange.opacity(0.12))
+                )
+                .scaleEffect(pulse ? 1.08 : 1.0)
+                .animation(
+                    .easeInOut(duration: 0.8).repeatForever(autoreverses: true),
+                    value: pulse
+                )
+        }
+        .onAppear { pulse = true }
     }
 }
