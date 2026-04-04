@@ -22,6 +22,7 @@ class PracticeSessionViewModel: ObservableObject {
     @Published var feedbackMessage: String = ""
     @Published var isSessionComplete: Bool = false
     @Published var sessionResult: PracticeResult?
+    @Published var showHint: Bool = false
     @Published var showCelebration: Bool = false
     @Published var didLevelUp: Bool = false
     @Published var newLevel: Int = 0
@@ -93,6 +94,7 @@ class PracticeSessionViewModel: ObservableObject {
         selectedAnswer = nil
         isCorrect = nil
         showFeedback = false
+        showHint = false
         feedbackMessage = ""
         currentProblem = generateNextProblem()
     }

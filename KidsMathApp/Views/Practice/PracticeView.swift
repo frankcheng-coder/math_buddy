@@ -36,7 +36,8 @@ struct PracticeView: View {
                 // Visual Problem Display
                 ProblemDisplayView(
                     problem: viewModel.currentProblem,
-                    theme: viewModel.theme
+                    theme: viewModel.theme,
+                    showHint: $viewModel.showHint
                 )
 
                 Spacer()
@@ -121,11 +122,31 @@ struct PracticeHeaderView: View {
 struct ProblemDisplayView: View {
     let problem: MathProblem
     let theme: Theme
+    @Binding var showHint: Bool
 
     var body: some View {
         VStack(spacing: 16) {
-            // Visual objects — layout varies by operation
-            visualObjectsView
+            // Visual objects — shown only after Hint is tapped
+            if showHint {
+                visualObjectsView
+                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
+            } else {
+                Button {
+                    withAnimation(.spring(response: 0.3)) {
+                        showHint = true
+                    }
+                } label: {
+                    Label("Hint", systemImage: "lightbulb")
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .foregroundColor(.orange)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(
+                            Capsule()
+                                .fill(Color.orange.opacity(0.12))
+                        )
+                }
+            }
 
             // Equation text
             HStack(spacing: 8) {
