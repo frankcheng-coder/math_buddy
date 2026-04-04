@@ -37,9 +37,10 @@ struct AdditionEngine: MathEngine {
     }
 
     func generateProblem(maxNumber: Int, choiceCount: Int = 4) -> MathProblem {
-        // Both operands chosen so their sum stays within maxNumber
-        let a = Int.random(in: 0...maxNumber)
-        let b = Int.random(in: 0...(maxNumber - a))
+        // Both operands chosen so their sum stays within maxNumber; neither operand is 0
+        let safeMax = max(maxNumber, 2)
+        let a = Int.random(in: 1...(safeMax - 1))
+        let b = Int.random(in: 1...(safeMax - a))
         let answer = a + b
         let choices = generateChoices(correctAnswer: answer, count: choiceCount, range: 0...maxNumber)
         return MathProblem(operand1: a, operand2: b, operation: .addition, correctAnswer: answer, choices: choices)
@@ -54,9 +55,10 @@ struct SubtractionEngine: MathEngine {
     }
 
     func generateProblem(maxNumber: Int, choiceCount: Int = 4) -> MathProblem {
-        // a is within maxNumber, b <= a so result is non-negative
-        let a = Int.random(in: 0...maxNumber)
-        let b = Int.random(in: 0...a)
+        // a is within maxNumber, b in 1..a so result is non-negative and no -0
+        let safeMax = max(maxNumber, 2)
+        let a = Int.random(in: 1...safeMax)
+        let b = Int.random(in: 1...a)
         let answer = a - b
         let choices = generateChoices(correctAnswer: answer, count: choiceCount, range: 0...maxNumber)
         return MathProblem(operand1: a, operand2: b, operation: .subtraction, correctAnswer: answer, choices: choices)
@@ -70,13 +72,15 @@ struct MultiplicationEngine: MathEngine {
         generateProblem(level: 1)
     }
 
-    /// Level-based generation with gentle scaling.
-    /// Lv1: 1-2 × 1-3, Lv2: 1-3 × 1-4, Lv3: 1-4 × 1-5, Lv4+: grows slowly, capped at 9×9.
+    /// Level-based generation with meaningful scaling.
+    /// Lv1: 1-2 × 1-3, Lv2: 1-4 × 1-5, Lv3: 2-6 × 2-7, Lv4: 2-8 × 2-9, Lv5+: 3-9 × 3-9.
     func generateProblem(level: Int) -> MathProblem {
-        let maxA = min(level + 1, 9)
-        let maxB = min(level + 2, 9)
-        let a = Int.random(in: 1...maxA)
-        let b = Int.random(in: 1...maxB)
+        let maxA = min(level * 2, 9)
+        let maxB = min(level * 2 + 1, 9)
+        let minA = level >= 5 ? 3 : (level >= 3 ? 2 : 1)
+        let minB = level >= 5 ? 3 : (level >= 3 ? 2 : 1)
+        let a = Int.random(in: minA...maxA)
+        let b = Int.random(in: minB...maxB)
         let answer = a * b
         let choices = generateChoices(correctAnswer: answer, count: 4, range: 0...max(answer + 5, 10))
         return MathProblem(operand1: a, operand2: b, operation: .multiplication, correctAnswer: answer, choices: choices)
@@ -91,11 +95,12 @@ struct DivisionEngine: MathEngine {
     }
 
     /// Level-based generation derived from multiplication facts — always whole-number answers.
-    /// Lv1: answer 1-2, divisor 2. Lv2: answer 1-3, divisor 2-3. Lv3+: grows slowly, capped.
+    /// Lv1: answer 1-2, divisor 2. Lv2: answer 1-4, divisor 2-3. Lv3: 2-6 ÷ 2-4. Lv4: 2-8 ÷ 2-6. Lv5+: 2-9 ÷ 2-9.
     func generateProblem(level: Int) -> MathProblem {
-        let maxAnswer = min(level + 1, 9)
-        let maxDivisor = min(level + 1, 6)
-        let answer = Int.random(in: 1...maxAnswer)
+        let maxAnswer = min(level * 2, 9)
+        let maxDivisor = min(level + 1, 9)
+        let minAnswer = level >= 3 ? 2 : 1
+        let answer = Int.random(in: minAnswer...maxAnswer)
         let divisor = Int.random(in: 2...max(maxDivisor, 2))
         let dividend = answer * divisor
         let choices = generateChoices(correctAnswer: answer, count: 4, range: 0...max(answer + 5, 10))

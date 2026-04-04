@@ -11,6 +11,7 @@ class PracticeSessionViewModel: ObservableObject {
     private let engine: MathEngine
     private let audioService = AudioService.shared
     private let rewardService = RewardService.shared
+    private var usedQuestions: Set<String> = []
 
     @Published var currentProblem: MathProblem
     @Published var currentProblemIndex: Int = 0
@@ -34,6 +35,11 @@ class PracticeSessionViewModel: ObservableObject {
         self.level = level
         self.engine = MathEngineFactory.engine(for: operation)
         self.currentProblem = Self.generateFirst(engine: engine, difficulty: difficulty, levelMaxNumber: levelMaxNumber, level: level)
+        self.usedQuestions.insert(Self.questionKey(currentProblem))
+    }
+
+    private static func questionKey(_ p: MathProblem) -> String {
+        "\(p.operand1)\(p.operation.symbol)\(p.operand2)"
     }
 
     private static func generateFirst(engine: MathEngine, difficulty: DifficultyLevel, levelMaxNumber: Int?, level: Int?) -> MathProblem {
@@ -92,6 +98,22 @@ class PracticeSessionViewModel: ObservableObject {
     }
 
     private func generateNextProblem() -> MathProblem {
+        // Try up to 20 times to avoid repeating a question within this session
+        for _ in 0..<20 {
+            let problem = generateRawProblem()
+            let key = Self.questionKey(problem)
+            if !usedQuestions.contains(key) {
+                usedQuestions.insert(key)
+                return problem
+            }
+        }
+        // Fallback: all unique combinations exhausted, allow repeat
+        let problem = generateRawProblem()
+        usedQuestions.insert(Self.questionKey(problem))
+        return problem
+    }
+
+    private func generateRawProblem() -> MathProblem {
         if let max = levelMaxNumber {
             if let addEngine = engine as? AdditionEngine {
                 return addEngine.generateProblem(maxNumber: max)
